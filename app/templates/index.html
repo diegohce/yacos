@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{super()}}
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	<div class="row">
+		<h1>Welcome to Marquee Ramone</h1>
+		<p class="lead">A sample marquee for last minute notices</p>
+	</div>
+
+	<div class="row"> 
+
+		<div id="marquee" class="col-md-12">
+			<div class="row" v-for="item in items">
+				<div class="col-md-2">
+					[{%-raw-%}{{item.timestamp}}{%-endraw-%}]
+				</div>
+
+				<div class="col-md-1">
+					{%-raw-%}{{item.user}}{%-endraw-%}
+				</div>
+
+				<div class="col-md-8">
+					{%-raw-%}{{item.message}}{%-endraw-%}
+				</div>
+
+			</div> <!-- /.row -->
+
+		</div> <!-- /#marque -->
+
+	</div> <!-- /.row -->
+
+</div> <!-- /.container -->
+
+<hr />
+
+{#
+<div class="container">
+
+	<div class="row">
+
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<span class="lead">Services status</span>
+				</div>
+				<div class="panel-body">
+					{% include "index.services_panel.html" %} 
+				</div>
+			</div>
+		</div> <!-- ./col services -->
+
+		<div class="col-md-4">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<span class="lead">JIRAs</span>
+				</div>
+				<div class="panel-body">
+					{% include "index.jiras_panel.html" %} 
+				</div>
+			</div>
+		</div> <!-- ./col jiras -->
+
+	</div> <!-- /.row -->
+
+</div> <!-- /.container -->
+#}
+
+{#
+<hr />
+
+<div class="fluid-container">
+
+	<div class="row">
+
+		<div class="col-md-12">
+
+			<iframe src="http://10.1.24.56:5601/app/kibana#/visualize/edit/Stacked-Groups?embed=true&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-15m,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'*')),uiState:(),vis:(aggs:!((id:'1',params:(),schema:metric,type:count),(id:'2',params:(customInterval:'2h',extended_bounds:(),field:'@timestamp',interval:auto,min_doc_count:1),schema:segment,type:date_histogram),(id:'3',params:(field:rule.groups,order:desc,orderBy:'1',size:5),schema:group,type:terms)),listeners:(),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,defaultYExtents:!f,mode:stacked,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),title:'Stacked%20Groups',type:histogram))" height="600" width="800"></iframe>
+		
+		</div>
+	</div>
+</div>
+#}
+
+<hr />
+
+<div class="container">
+
+	<div id="somecontent">
+		<div class="row">
+			<div class="col-md-12" v-html="inner_content">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12" v-text="inner_content">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				This one too: {%-raw-%}{{inner_content}}{%-endraw-%}
+			</div>
+		</div>
+	</div>
+
+</div> <!-- /.container -->
+
+
+{# https://vuejs.org/v2/guide/list.html#Basic-Usage #}
+{# http://stackoverflow.com/questions/2271156/chrome-desktop-notification-example #}
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script>
+
+var somecontent = new Vue({
+	el: '#somecontent',
+	data: {
+		inner_content: ''
+	},
+	
+	methods: {
+		get: function(){
+			axios.get("{{ url_for('api.somecontent') }}")
+			.then( function(response){
+				if (response) 
+					somecontent.inner_content = response.data
+			})
+			.catch( function(error){
+				console.log(error)
+			});
+		}
+	}
+
+});
+
+{#
+services = new Vue({
+	el: "#services"
+});
+#}
+
+var marquee = new Vue({
+	el: '#marquee'
+	,
+	data: {
+		items: [],
+		last_message: 0,
+		notify: false,
+	}
+	,
+	methods: {
+		update : function () {
+			axios.get("{{ url_for('api.marquee.update') }}")
+			.then( function(response) {
+				if (response) {
+					marquee.items = response.data;
+					
+					if(marquee.last_message != response.data[0].id) {
+						marquee.last_message = response.data[0].id;
+						if(marquee.notify) 
+							popup_notification("New message from " + response.data[0].user,
+											   response.data[0].message);
+						else
+							marquee.notify = true;
+					}
+				}
+			})
+			.catch( function(error) {
+				console.log(error);
+			})
+		},
+	},
+});
+
+
+function popup_notification(title, message) {
+	if (Notification.permission !== "granted")
+		Notification.requestPermission();
+	else {
+		var notification = new Notification(title, {
+            icon: "{{ url_for('static', filename='notify_icon.png') }}",
+            body: message,
+    	});
+
+		notification.onclick = function () {
+			{# window.open("{{ url_for('index') }}"); #}
+			window.focus();
+			notification.close();
+		};
+	}
+}
+
+
+$(document).ready( function() {
+	if (Notification.permission !== "granted")
+		Notification.requestPermission();
+	marquee.update()
+	setInterval(marquee.update, 5000);
+	somecontent.get()
+});
+
+</script>
+{% endblock %}
+
+

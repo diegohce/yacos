@@ -1,0 +1,31 @@
+
+{% macro messagebox(with_categories=True) -%}
+
+	{% for (category, message) in get_flashed_messages(with_categories=with_categories) %}
+	  {% if category == "error" %}
+
+		  <div class="row-fluid">
+			  <div class="col-md-12">
+				  <div class="alert alert-danger alert-dismissable">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					  <strong>Error!</strong><br/> {{ message |safe }}
+				  </div>
+			  </div>
+		  </div>
+
+	  {% else %}
+
+		  <div class="row-fluid">
+			  <div class="col-md-12">
+				  <div class="alert alert-success alert-dismissable">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					  <strong>{{ _('Great!') }}</strong><br/> {{ message |safe }}
+				  </div>
+			  </div>
+		  </div>
+		  
+	  {% endif %}
+		  
+	{% endfor %}
+
+{%- endmacro %}

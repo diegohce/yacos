@@ -1,0 +1,13 @@
+body {
+	font-family: 'Raleway', sans-serif;
+}
+
+#marquee {
+	height: 100px;
+	overflow: auto;
+	width: 100%;
+	border: 1px solid;
+	border-radius: 0.5em 0em 0em 0.5em;
+}
+
+

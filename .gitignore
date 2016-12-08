@@ -1,0 +1,8 @@
+env
+.*.swp
+*.py?
+*.db
+*.db-???
+robots.txt
+activate
+

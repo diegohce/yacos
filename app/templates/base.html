@@ -1,0 +1,34 @@
+{% extends "bootstrap/base.html" %}
+{#% import "components.html" as components with context%#}
+
+{% block head %}
+{{ super() }}
+<meta charset="utf-8"/>
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<link href="{{ url_for('static', filename='custom.css') }}" rel="stylesheet">
+<style>
+</style>
+{% endblock %}
+
+
+{% block title %}{{ _('Some title') }}{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script src="https://unpkg.com/axios@0.12.0/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+{#<script type="text/javascript">
+/*
+$(document).ready(function(){
+});
+*/
+</script>#}
+{% endblock %}
+
+

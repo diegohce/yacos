@@ -1,0 +1,11 @@
+Babel
+Flask
+Flask-Admin
+Flask-Babel
+Flask-Bootstrap
+Flask-Login
+Flask-WTF
+WTForms
+peewee
+wtf-peewee
+

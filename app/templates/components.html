@@ -1,0 +1,129 @@
+
+
+{% macro navbar(logo='Logo',logo_text='Logo Text', pills=[], user_menu={}) -%}
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+
+		<div class="navbar-header">
+			<div class="navbar-brand"><strong>{{ logo | safe }}</strong> <sup><small>(alpha)</small></sup></div>
+
+			<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+				<span class="glyphicon glyphicon-menu-hamburger"></span>
+			</button>
+
+			{% if logo_text %}
+			<p class="navbar-text">{{ logo_text }}</p>
+			{% endif %}
+		</div>
+
+
+
+<div id="navbarCollapse" class="collapse navbar-collapse">
+		{% if user_menu %}
+		<ul class="nav navbar-nav navbar-right">
+			<li class="dropdown visible-xs-block visible-sm-block">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					{{_('Categories')}}&nbsp;<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+					{%for ptype in product_types%}
+					<li role="presentation">
+						<a href="#" role="menuitem">
+							{{ ptype.product_type_description }} ({{ ptype.count() }})
+						</a>
+					</li>
+					{%endfor%}
+				</ul>
+			</li>
+			<li class="dropdown visible-xs-block visible-sm-block">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					{{_('Brands')}}&nbsp;<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+					{%for brand in product_suppliers%}
+					<li role="presentation">
+						<a href="#" role="menuitem">
+							{{ brand.supplier_name }} ({{brand.count()}})
+						</a>
+					</li>
+					{%endfor%}
+				</ul>
+			</li>
+					
+		{% if pills %}
+			{% for entry in pills %}
+				<li>
+					<a href="{{ entry['link'] }}" class="navbar-link">
+						{%if entry['icon']%}
+						<span class="glyphicon glyphicon-{{ entry['icon'] }}"></span>
+						{% endif %}
+						&nbsp;{{ entry['text'] }}
+					</a>
+				</li>
+			{% endfor %}
+		{% endif %}
+				<li>
+					<a href="{{url_for('cart.show')}}" class="navbar-link">
+						<span class="glyphicon glyphicon-shopping-cart"></span>
+						&nbsp;{{_('Cart')}}&nbsp;
+						<div id="cart-count"class="badge">{{cart_count or 0}}</div>
+					</a>
+				</li>
+
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					<span class="glyphicon glyphicon-user"></span> {{ user_menu['user_name'] }}
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" role="menu">
+                    {% if current_user.lang == 'es' %}
+                    <li class="active">
+                    {% else %}
+                    <li>
+                    {% endif %}
+                    <a href="#"><img src="{{ url_for('static', filename='flags/ar.png') }}" />&nbsp;ES</a></li>
+
+                    {% if current_user.lang == 'en' %}
+                    <li class="active">
+                    {% else %}
+                    <li>
+                    {% endif %}
+                    <a href="#"><img src="{{ url_for('static', filename='flags/gb.png') }}" />&nbsp;EN</a></li>
+					<li class="divider"></li>
+					<li>
+                        <a href="#ModalContactForm" data-toggle="modal">
+                           <span class="glyphicon glyphicon-envelope"></span> {{ _('Contact Us') }}</a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank">
+                           <span class="glyphicon glyphicon-question-sign"></span> FAQs</a>
+                    </li>
+					<!-- li class="divider"></li -->
+					{% if not current_user.is_anonymous %}
+						{% for entry in user_menu['menu'] %}
+							{% if entry['text'] == '--' %}
+						<li class="divider"></li>
+							{% else %}
+						<li>
+							<a href="{{ entry['link'] }}">
+								<span class="glyphicon glyphicon-{{ entry['icon'] }}"></span>
+									&nbsp;{{ entry['text'] }}
+							</a>
+						</li>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</ul>
+			</li>
+		</ul>
+		{% endif %}
+
+</div>
+	</div>
+</div>
+
+{%- endmacro %}
+
+
+
