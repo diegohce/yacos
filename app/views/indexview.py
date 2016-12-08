@@ -30,5 +30,22 @@ class IndexView(MethodView):
 
 
 
+##encoding: utf-8
+#
+#
+#import re
+#
+#with open('checkout_message_client.txt') as f:
+#	c = unicode(f.read().decode('utf-8'))
+#
+#with open('template1.conf') as f:
+#	c = unicode(f.read().decode('utf-8'))
+#
+#
+#m = re.findall('(\{\{[a-z,A-Z,_,.,0-9]*\}\})', c)
+#print m
+#
+#
+
 
 
