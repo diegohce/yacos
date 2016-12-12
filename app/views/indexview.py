@@ -10,21 +10,34 @@ from flask_login import (
 )
 from app import (
     app,
-    models,
+#    models,
     forms,
 )
 
 from peewee import fn
 from flask_babel import lazy_gettext as _
-
+from app.models import *
 
 class IndexView(MethodView):
 
 	#decorators = [login_required]
 
 	def get(self):
+		
+		templates = Template.select().order_by(Template.name)
+		envs = Environment.select().order_by(Environment.name)
 
-		return flask.render_template('index.html')
+		envs_templates = (Template.select()
+						.join(Variable, JOIN.LEFT_OUTER)
+						.join(Environment, JOIN.LEFT_OUTER).switch(Template)
+						.order_by(Template.name, Environment.name).aggregate_rows() )
+
+		print envs_templates
+
+		return flask.render_template('index.html', 
+			templates=templates,
+			envs_templates=envs_templates,
+			envs=envs)
 #
 
 
