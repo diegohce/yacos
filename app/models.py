@@ -53,9 +53,14 @@ class Environment(flask_db.Model):
 
 
 class Global(flask_db.Model):
-	name  = CharField(unique=True)
+	name  = CharField()
 	value = CharField(default='')
-	env   = ForeignKeyField(Environment)
+	env   = ForeignKeyField(Environment, related_name='environments')
+
+	class Meta:
+		indexes = (
+            (('name', 'env'), True),
+        )
 
 	def __unicode__(self):
 		return self.name

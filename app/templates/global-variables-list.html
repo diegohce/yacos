@@ -1,0 +1,15 @@
+
+		<div class="col-md-4 col-md-offset-1 variables-list">
+			<p class="lead">{{ _('Global variables list') }}</p>
+			{% set last_name = [''] %}
+			{% for global_v in gglobals %}
+					{% if last_name[0] != global_v.name %}
+						{% set dummy = last_name.pop() %}
+						{% set dummy = last_name.append(global_v.name) %}
+						{% if loop.index != 0 %} <br> {%endif%}
+						global.{{ global_v.name }}
+					{% endif %}
+					<span class="label label-success">{{ global_v.env.name }}</span>
+			{% endfor %}
+		</div>
+

@@ -11,40 +11,50 @@
 <div class="container">
 
 	<div class="row">
-		<h1>Welcome to Marquee Ramone</h1>
-		<p class="lead">A sample marquee for last minute notices</p>
+		<h1>YACOS</h1>
+		<p class="lead">(Yet Another Configuration Server)</p>
 	</div>
-
-	{% for template in templates %}
-	{% set template_envs = [] %}
-	{% for v in template.variable_set %}
-		{% if template_envs.append(v.env.name) %}{%endif%}
-	{% endfor %}
-
 
 	<div class="row">
-		<div class="col-md-6 template-list-item">
-			<p class="lead">{{ template.name }}</p>
-			
-			{% for e in envs %}
-				{% if e in template_envs %}
-					{% set found = 'progress-bar-success' %}
-				{% else %}
-					{% set found = 'progress-bar-danger' %}
-				{% endif %}
-				{{found}}
-			<span class="badge {{found}}">{{e.name}}</span>
+	
+		<div class="col-md-7">
 
-			<p>{{ template.body | truncate(100) | safe }}
-			<span class="pull-right">
-				<span class="glyphicon glyphicon-pencil"></span>
-				<span class="glyphicon glyphicon-download"></span>
-				<span class="glyphicon glyphicon-trash"></span>
-			</span></p>
+			{% for template in templates %}
+				{% set template_envs = [] %}
+				{% for v in template.variable_set %}
+					{% set dummy = template_envs.append(v.env.name) %}
+				{% endfor %}
+
+			<div class="row">
+				<div class="col-md-12 template-list-item">
+					<p class="lead">{{ template.name }}</p>
+
+					{% for e in envs %}
+						{% set found = ['progress-bar-danger'] %}
+						{% if e.name in template_envs %}
+							{% set dummy = found.pop() %}
+							{% set dummy = found.append('progress-bar-success') %}
+						{% endif %}
+					<a href="#">
+						<span class="badge {{found[0]}} env-popup" 
+							  data-title="{{_('Fill in variables for') }} {{e.name}}">{{e.name}}</span></a>
+					{% endfor %}
+
+					<p>{{ template.body | truncate(100) | safe }}
+					<span class="pull-right">
+						<span class="glyphicon glyphicon-download"></span>
+						&nbsp;
+						<span class="glyphicon glyphicon-trash"></span>
+					</span></p>
+				</div>
+			</div>
+			{% endfor %}
+
 		</div>
-	</div>
-	{% endfor %}
 
+		{% include "global-variables-list.html" with context %}
+
+	</div> <!-- /.row -->
 
 </div> <!-- /.container -->
 
@@ -69,6 +79,8 @@ $(document).ready( function() {
 	$(".glyphicon-trash").tooltip({
 		title: '{{ _("Delete template") }}',
 	});
+
+	$(".env-popup").tooltip({});
 
 });
 </script>
