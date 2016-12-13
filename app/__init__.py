@@ -33,8 +33,6 @@ app.config.from_pyfile(os.path.join(app.root_path, 'configserver.cfg'))
 #app.config['FILES_PATH'] = os.path.join(app.root_path, 'static') #, app.config['FILES_PATH'])
 #app.config['FILES_RELATIVE_PATH'] = 'files/'
 
-print app.config['DATABASE']
-
 flask_db = FlaskDB(app)
 
 import models

@@ -15,14 +15,25 @@
 		<p class="lead">A sample marquee for last minute notices</p>
 	</div>
 
-	{% for template in templates  %}
+	{% for template in templates %}
+	{% set template_envs = [] %}
+	{% for v in template.variable_set %}
+		{% if template_envs.append(v.env.name) %}{%endif%}
+	{% endfor %}
+
+
 	<div class="row">
 		<div class="col-md-6 template-list-item">
 			<p class="lead">{{ template.name }}</p>
-
-			<span class="badge progress-bar-success">PROD</span>
-			<span class="badge progress-bar-danger">STAGE</span>
-			<span class="badge progress-bar-danger">DEV</span>
+			
+			{% for e in envs %}
+				{% if e in template_envs %}
+					{% set found = 'progress-bar-success' %}
+				{% else %}
+					{% set found = 'progress-bar-danger' %}
+				{% endif %}
+				{{found}}
+			<span class="badge {{found}}">{{e.name}}</span>
 
 			<p>{{ template.body | truncate(100) | safe }}
 			<span class="pull-right">
@@ -36,16 +47,6 @@
 
 
 </div> <!-- /.container -->
-
-<div class="container">
-	{% for t in envs_templates %}
-	<div class="row">
-		{{ t.name }}
-		{{ t.environment[0] }}
-	</div>
-	{% endfor %}
-
-</div>
 
 {# https://vuejs.org/v2/guide/list.html#Basic-Usage #}
 

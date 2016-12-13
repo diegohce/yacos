@@ -24,20 +24,19 @@ class IndexView(MethodView):
 
 	def get(self):
 		
-		templates = Template.select().order_by(Template.name)
 		envs = Environment.select().order_by(Environment.name)
 
-		envs_templates = (Template.select()
-						.join(Variable, JOIN.LEFT_OUTER)
-						.join(Environment, JOIN.LEFT_OUTER).switch(Template)
-						.order_by(Template.name, Environment.name).aggregate_rows() )
+		templates = (Template.select(Template, Variable)
+					.join(Variable, JOIN.LEFT_OUTER)
+					.order_by(Template.name, Variable.env).aggregate_rows() )
 
-		print envs_templates
+
+		print templates
 
 		return flask.render_template('index.html', 
-			templates=templates,
-			envs_templates=envs_templates,
-			envs=envs)
+					templates=templates,
+					envs=envs)
+##
 #
 
 
