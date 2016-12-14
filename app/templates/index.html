@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "common.html" as common %}
 
 {% block styles %}
 {{super()}}
@@ -14,6 +16,31 @@
 		<h1>YACOS</h1>
 		<p class="lead">(Yet Another Configuration Server)</p>
 	</div>
+
+	{{ common.messagebox() }}
+	
+	<div class="row">
+
+		<div class="col-md-7 border-thin-gray new-template-upload">
+			<p class="lead">{{ _('Add new template') }}</p>
+
+			<form action="{{ url_for('template.upload') }}" method="post" class="form form-inline" enctype="multipart/form-data" role="form">
+				{{ form.hidden_tag() }}
+				{{ wtf.form_field(form.name) }}
+
+				<label class="btn btn-default btn-file">
+				    {{ _('Browse') }} {{ wtf.form_field(form.template, **{'style':'display: none;'}) }}
+				</label>
+
+				{{ wtf.form_field(form.submit, button_map={'submit':'primary'}) }}
+
+			</form>
+		</div>
+
+	</div>
+
+
+	<div class="row"><div class="col-md-12">&nbsp;</div></div>
 
 	<div class="row">
 	
@@ -35,16 +62,18 @@
 							{% set dummy = found.pop() %}
 							{% set dummy = found.append('progress-bar-success') %}
 						{% endif %}
-					<a href="#">
+					<a href="{{ url_for('varsenv.edit',tid=template.id, eid=e.id) }}">
 						<span class="badge {{found[0]}} env-popup" 
 							  data-title="{{_('Fill in variables for') }} {{e.name}}">{{e.name}}</span></a>
 					{% endfor %}
 
 					<p>{{ template.body | truncate(100) | safe }}
 					<span class="pull-right">
-						<span class="glyphicon glyphicon-download"></span>
+						<a href="{{ url_for('template.download', tid=template.id) }}">
+							<span class="glyphicon glyphicon-download"></span></a>
 						&nbsp;
-						<span class="glyphicon glyphicon-trash"></span>
+						<a href="{{ url_for('template.delete', tid=template.id) }}">
+							<span class="glyphicon glyphicon-trash"></span></a>
 					</span></p>
 				</div>
 			</div>

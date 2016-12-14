@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "common.html" as common %}
+
+{% block styles %}
+{{super()}}
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	{{ common.messagebox() }}
+
+	<div class="row">
+	
+		<div class="col-md-7">
+
+			<pre>
+				{% for v in vars_from_template %}
+					{{ v }}
+				{% endfor %}
+
+				{% for v in variables %}
+					{{ v }}
+				{% endfor %}
+			
+			</pre>
+
+		</div>
+
+		{% include "global-variables-list.html" with context %}
+
+	</div> <!-- /.row -->
+
+</div> <!-- /.container -->
+
+{# https://vuejs.org/v2/guide/list.html#Basic-Usage #}
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+
+<script>
+$(document).ready( function() {
+});
+</script>
+{% endblock %}
+
+

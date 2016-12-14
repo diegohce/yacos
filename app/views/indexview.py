@@ -23,6 +23,8 @@ class IndexView(MethodView):
 	#decorators = [login_required]
 
 	def get(self):
+
+		form = forms.TemplateUploadForm()
 		
 		envs = Environment.select().order_by(Environment.name)
 
@@ -33,31 +35,10 @@ class IndexView(MethodView):
 		gglobals = Global.select().order_by(Global.name)
 
 		return flask.render_template('index.html',
+					form=form,
 					gglobals=gglobals,
 					templates=templates,
 					envs=envs)
 ##
 #
-
-
-
-
-##encoding: utf-8
-#
-#
-#import re
-#
-#with open('checkout_message_client.txt') as f:
-#	c = unicode(f.read().decode('utf-8'))
-#
-#with open('template1.conf') as f:
-#	c = unicode(f.read().decode('utf-8'))
-#
-#
-#m = re.findall('(\{\{[a-z,A-Z,_,.,0-9]*\}\})', c)
-#print m
-#
-#
-
-
 
