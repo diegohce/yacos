@@ -11,6 +11,8 @@
 
 <div class="container">
 
+	{% include "yacos.html" %}
+
 	{{ common.messagebox() }}
 
 	<div class="row">
@@ -18,14 +20,9 @@
 		<div class="col-md-7">
 
 			<pre>
-				{% for v in vars_from_template %}
-					{{ v }}
+				{% for var_name, var_value in variables_d.iteritems() %}
+					{{ var_name }} == {{ var_value }}
 				{% endfor %}
-
-				{% for v in variables %}
-					{{ v }}
-				{% endfor %}
-			
 			</pre>
 
 		</div>
