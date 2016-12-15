@@ -12,6 +12,19 @@ from flask_babel import lazy_gettext as _
 
 
 
+def make_dyna_form(fields_d, submit_text='Submit'):
+	class F(Form):
+		pass
+
+	for f_name in fields_d:
+		setattr(F, f_name, TextField(f_name, validators=[validators.required()]))
+
+	setattr(F, 'submit', SubmitField(submit_text))
+
+	return F
+
+
+
 class TemplateUploadForm(Form):
 	name     = TextField(_('Template name'), validators=[validators.required()])
 	template = FileField(''                , validators=[validators.required()])

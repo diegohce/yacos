@@ -17,7 +17,9 @@ app.add_url_rule('/template/download/<tid>', view_func=TemplateDownloadView.as_v
 
 from varsenvview import (
 	VarsEnvView,
+	ConfigDownloadView,
 )
 app.add_url_rule('/variables/environment/<eid>/template/<tid>', view_func=VarsEnvView.as_view('varsenv.edit'))
+app.add_url_rule('/config/download/<ename>/<tname>', view_func=ConfigDownloadView.as_view('config.download'))
 
 
