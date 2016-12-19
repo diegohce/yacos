@@ -66,6 +66,9 @@
 
 					<p>{{ template.body | truncate(100) | safe }}
 					<span class="pull-right">
+						<a href="{{ url_for('template.edit', tid=template.id) }}">
+							<span class="glyphicon glyphicon-pencil"></span></a>
+						&nbsp;
 						<a href="{{ url_for('template.download', tid=template.id) }}">
 							<span class="glyphicon glyphicon-download"></span></a>
 						&nbsp;

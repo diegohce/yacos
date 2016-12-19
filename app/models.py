@@ -69,8 +69,9 @@ class Global(flask_db.Model):
 	
 
 class Template(flask_db.Model):
-	name = CharField(unique=True)
-	body = TextField()
+	name    = CharField(unique=True)
+	body    = TextField()
+	enabled = BooleanField(default=True)
 
 	def __unicode__(self):
 		return self.name

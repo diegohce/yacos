@@ -115,9 +115,17 @@ class VarsEnvView(MethodView):
 
 
 	def __parse_template(self, body):
-		m = re.findall('\{\{([a-z,A-Z,_,.,0-9, ]*)\}\}', body)
-#		print m
-		return m
+#		m = re.findall('\{\{([a-z,A-Z,_,.,0-9, ]*)\}\}', body)
+		m = re.findall('\{\{(.*)\}\}', body)
+		
+		ret = []
+		for v in m:
+			v_name , sep, dummy = v.partition('|')
+			ret.append(v_name)
+#		print ret
+
+		return ret
+
 
 	def __resolve_globals(self, environment, variables_d):
 	

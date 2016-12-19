@@ -28,7 +28,7 @@ class IndexView(MethodView):
 		
 		envs = Environment.select().order_by(Environment.name)
 
-		templates = (Template.select(Template, Variable)
+		templates = (Template.select(Template, Variable).where(Template.enabled == True)
 					.join(Variable, JOIN.LEFT_OUTER)
 					.order_by(Template.name, Variable.env).aggregate_rows() )
 

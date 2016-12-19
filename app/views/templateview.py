@@ -47,8 +47,11 @@ class TemplateDeleteView(MethodView):
 			template = Template.get(Template.id == tid)
 			name = template.name
 
-			Variable.delete().where(Variable.template == template).execute()
-			template.delete_instance()
+			template.enabled = False
+			template.save()
+
+#			Variable.delete().where(Variable.template == template).execute()
+#			template.delete_instance()
 
 			flask.flash(_('Template %(name)s deleted successfully', name=name) , 'success')
 
@@ -61,9 +64,48 @@ class TemplateDeleteView(MethodView):
 #
 
 
-class TemplateDownloadView(MethodView):
+class TemplateEditView(MethodView):
 
 	#decorators = [login_required]
+
+	def get(self, tid):
+
+		try:
+			template = Template.get(Template.id == tid)
+		except Template.DoesNotExist:
+			flask.flash(_('Error retrieving template'), 'error')
+			return flask.redirect(flask.request.referrer or flask.url_for('index') )
+
+		form = forms.TemplateEditForm(tid=template.id, name=template.name, body=template.body)
+
+		gglobals = Global.select().order_by(Global.name)
+
+		return flask.render_template('template-edit.html', 
+									form=form,
+									gglobals=gglobals)
+
+	def post(self):
+
+		form = forms.TemplateEditForm()
+
+		try:
+			template = Template.get(Template.id == form.tid.data)
+		except Template.DoesNotExist:
+			flask.flash(_('Error retrieving template'), 'error')
+			return flask.redirect(flask.request.referrer or flask.url_for('index') )
+
+		template.name = form.name.data
+		template.body = form.body.data
+		template.save()
+
+		flask.flash(_('Template <strong>%(name)s</strong> updated', name=template.name), 'ok')
+
+		return flask.redirect( flask.url_for('index') )
+##
+#
+			
+
+class TemplateDownloadView(MethodView):
 
 	def get(self, tid):
 

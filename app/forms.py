@@ -17,7 +17,8 @@ def make_dyna_form(fields_d, submit_text='Submit'):
 		pass
 
 	for f_name in fields_d:
-		setattr(F, f_name, TextField(f_name, validators=[validators.required()]))
+		setattr(F, f_name, TextField(f_name))
+#		setattr(F, f_name, TextField(f_name, validators=[validators.required()]))
 
 	setattr(F, 'submit', SubmitField(submit_text))
 
@@ -31,6 +32,13 @@ class TemplateUploadForm(Form):
 
 	submit   = SubmitField(_('Upload'))
 
+
+class TemplateEditForm(Form):
+	tid  = HiddenField()
+	name = TextField(_('Template name'), validators=[validators.required()])
+	body = TextAreaField('Body'        , validators=[validators.required(), validators.length(max=1024)])
+
+	submit = SubmitField(_('Save'))
 
 
 #class ContactForm(Form):

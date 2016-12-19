@@ -1,7 +1,7 @@
 import app
 from playhouse.migrate import *
 
-db = SqliteDatabase('app/nletter.db')
+db = SqliteDatabase('app/configserver.db')
 migrator = SqliteMigrator(db)
 
 #price_field = DecimalField(default=0.0)
@@ -24,8 +24,13 @@ migrator = SqliteMigrator(db)
 #    migrator.rename_column('CustomerOrderProduct', 'comments2', 'comments')
 #)
 
-migrate(
-	migrator.rename_table('AnonBasket', 'AnonBasket_old'),
-	migrator.rename_table('AnonBasket2','AnonBasket')
-)
+#migrate(
+#	migrator.rename_table('AnonBasket', 'AnonBasket_old'),
+#	migrator.rename_table('AnonBasket2','AnonBasket')
+#)
+
+with db.transaction():
+	migrate(
+       migrator.add_column('Template', 'enabled', BooleanField(default=True)),
+	)
 
