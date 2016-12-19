@@ -4,7 +4,7 @@
 from flask_wtf import FlaskForm as Form
 from wtforms.fields import html5
 from wtforms import (
-	TextField, TextAreaField, SelectField, 
+	TextField, TextAreaField, SelectField,PasswordField,
 	SubmitField, HiddenField, validators,
 	FileField
 )
@@ -23,6 +23,13 @@ def make_dyna_form(fields_d, submit_text='Submit'):
 	setattr(F, 'submit', SubmitField(submit_text))
 
 	return F
+
+
+class LoginForm(Form):
+	username = TextField(_('Username')    , validators=[validators.required()])
+	password = PasswordField(_('Password'), validators=[validators.required()])
+
+	submit = SubmitField(_('Login'))
 
 
 

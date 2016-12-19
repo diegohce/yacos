@@ -97,6 +97,10 @@
 <script>
 $(document).ready( function() {
 	
+	$(".logout-button").tooltip({
+		title: '{{ _("Logout") }}',
+	});
+
 	$(".glyphicon-pencil").tooltip({
 		title: '{{ _("Edit template") }}',
 	});

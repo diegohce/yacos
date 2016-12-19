@@ -20,7 +20,7 @@ from app.models import *
 
 class TemplateUploadView(MethodView):
 
-	#decorators = [login_required]
+	decorators = [login_required]
 
 	def post(self):
 
@@ -39,7 +39,7 @@ class TemplateUploadView(MethodView):
 
 class TemplateDeleteView(MethodView):
 
-	#decorators = [login_required]
+	decorators = [login_required]
 
 	def get(self, tid):
 
@@ -66,7 +66,7 @@ class TemplateDeleteView(MethodView):
 
 class TemplateEditView(MethodView):
 
-	#decorators = [login_required]
+	decorators = [login_required]
 
 	def get(self, tid):
 
@@ -106,6 +106,8 @@ class TemplateEditView(MethodView):
 			
 
 class TemplateDownloadView(MethodView):
+
+	decorators = [login_required]
 
 	def get(self, tid):
 

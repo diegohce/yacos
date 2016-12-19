@@ -56,7 +56,13 @@ login_manager.anonymous_user = models.AnonUser
 
 @login_manager.user_loader
 def load_user(userid):
-	u = models.User.get(models.User.uid == userid)
+	try:
+		u = models.User.get(models.User.id == userid)
+	except models.User.DoesNotExist:
+		u = None
+	except Exception, e:
+		app.logger.error(repr(e))
+		u = None
 	return u
 
 

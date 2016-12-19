@@ -24,7 +24,7 @@ import re
 
 class VarsEnvView(MethodView):
 
-	#decorators = [login_required]
+	decorators = [login_required]
 
 	def get(self, eid, tid):
 		

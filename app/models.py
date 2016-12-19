@@ -31,6 +31,7 @@ class User(flask_db.Model, UserMixin):
 	username = CharField(unique=True)
 	password = CharField()
 	fullname = CharField(default='')
+	lang     = CharField(default='en')
 
 	class Meta:
 		indexes = (

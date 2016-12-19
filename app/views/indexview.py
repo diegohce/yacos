@@ -20,7 +20,7 @@ from app.models import *
 
 class IndexView(MethodView):
 
-	#decorators = [login_required]
+	decorators = [login_required]
 
 	def get(self):
 

@@ -32,5 +32,5 @@ migrator = SqliteMigrator(db)
 with db.transaction():
 	migrate(
        migrator.add_column('Template', 'enabled', BooleanField(default=True)),
+       migrator.add_column('User', 'lang', TextField(default='en')),
 	)
-

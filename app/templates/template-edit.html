@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "common.html" as common %}
+
+{% block styles %}
+{{super()}}
+<link href="https://fonts.googleapis.com/css?family=Ubuntu+Mono" rel="stylesheet">
+<style>
+#body {
+	height: 40em;
+	font-family: 'Ubuntu Mono', monospace;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+	{% include "yacos.html" %}
+
+	{{ common.messagebox() }}
+
+	<div class="row">
+	
+		<div class="col-md-7">
+
+			{{ wtf.quick_form(form, action=url_for('template.save'), button_map={'submit':'primary'}) }}
+
+
+		</div>
+
+		{% include "global-variables-list.html" with context %}
+
+	</div> <!-- /.row -->
+
+</div> <!-- /.container -->
+
+{# https://vuejs.org/v2/guide/list.html#Basic-Usage #}
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+
+<script>
+$(document).ready( function() {
+});
+</script>
+{% endblock %}
+
+
