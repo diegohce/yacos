@@ -37,7 +37,7 @@ class LoginView(MethodView):
 
 		try:
 			user = User.get(User.username == form.username.data,
-							User.password == form.username.data)
+							User.password == form.password.data)
 		except User.DoesNotExist:
 			flask.flash(_('Bad username/password'), 'error')
 			return flask.redirect( flask.url_for('login') )
