@@ -34,6 +34,7 @@ class VarsEnvView(MethodView):
 
 		templatebody = template.body
 		vars_from_template = self.__parse_template(templatebody)
+		vars_defaults = self.__parse_defaults(templatebody)
 
 		try:
 			variables = (Variable.select()
@@ -59,6 +60,7 @@ class VarsEnvView(MethodView):
 					form=form,
 					variables_d=variables_d,
 					vars_from_template=vars_from_template,
+					vars_defaults=vars_defaults,
 					variables=variables,
 					gglobals=gglobals,
 					environment=environment)
@@ -123,6 +125,17 @@ class VarsEnvView(MethodView):
 			v_name , sep, dummy = v.partition('|')
 			ret.append(v_name)
 #		print ret
+
+		return ret
+
+
+	def __parse_defaults(self, body):
+		m = re.findall('\{\{(.*)\}\}', body)
+		
+		ret = {}
+		for v in m:
+			v_name , sep, defa = v.partition('|')
+			ret[v_name.strip()] = defa.strip()
 
 		return ret
 
